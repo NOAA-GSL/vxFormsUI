@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>JobSetSpecification Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container py-5">
+        <h2>JobSetSpecification</h2>
+        <form action="/submit/jobset" method="post" class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Job Spec ID 1</label>
+                <input name="job1" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Job Spec ID 2</label>
+                <input name="job2" class="form-control" />
+            </div>
+            <div class="col-md-3"><label class="form-label">Status</label><input name="status" class="form-control" />
+            </div>
+            <div class="col-md-3"><label class="form-label">SubDoc</label><input name="subDoc" class="form-control" />
+            </div>
+            <div class="col-md-3"><label class="form-label">SubDocType</label><input name="subDocType"
+                    class="form-control" /></div>
+            <div class="col-md-3"><label class="form-label">SubType</label><input name="subType" class="form-control" />
+            </div>
+            <div class="col-md-3"><label class="form-label">Subset</label><input name="subset" class="form-control" />
+            </div>
+            <div class="col-md-3"><label class="form-label">Type</label><input name="type" class="form-control" /></div>
+            <div class="col-md-3">
+                <label class="form-label">Version</label>
+                <input name="version" class="form-control" value="V01" />
+            </div>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Submit JobSetSpecification</button>
+            </div>
+        </form>
+    </div>
+    <div class="mt-3">
+        <a href="/" class="btn btn-secondary">Back to Main Menu</a>
+    </div>
+</body>
+
+</html>
