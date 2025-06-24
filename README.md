@@ -1,16 +1,39 @@
-# Create a GO module
+# AVID Forms
 
+This project is a Go module that uses the [Gin web framework](https://gin-gonic.com/) and [Bootstrap 5](https://getbootstrap.com/) to implement a web-based UI with the following features:
+
+- **Form Selection:** Users can choose which form to use from a main page.
+- **Dynamic Form Rendering:** The UI presents the appropriate form for creating the associated JSON document based on user input.
+- **Default Version Value:** Any input field named `version` is pre-filled with the default value `"V01"`.
+- **Back Navigation:** Each form includes a back button that returns the user to the main page.
+
+The forms are based on the following JSON specifications:
+
+- [JobSpecification](#form-jobspecification)
+- [JobSetSpecification](#form-jobsetspecification)
+- [IngestDocumentSpecification](#form-ingestdocumentspecification)
+- [ProcessSpecification](#form-processspecificiation)
+- [DataSourceSpecification](#form-datasourcespecification)
+
+---
+
+The following was used for chatgpt to create the initial module.
+
+Create a GO module
 That uses the gin web framework and bootstrap 5 to implement a web based UI
-that
+that:
 
 1) Allows the user to select which form to use.
 2) Presents the appropriate form for creating the associated json document from the users input to the form.
+3) Has a default value of "V01" to any input named "version"
+4) Has a back button on each form that returns the user to the main page.
 
 using the following json for each form.
 
 Form JobSpecification:
 
-"{
+```json
+{
   "data_source_id":"DS:RAOB:HRRR_OPS:operational:1730496755:1814400:V01",
   "ingest_document_ids":[
     "MD:V01:RAOB:PRS:HRRR_OPS:ingest:grib2",
@@ -23,11 +46,13 @@ Form JobSpecification:
   "subset": "RAOB",
   "type": "PS",
   "version": "V01"
-}"
+}
+```
 
 Form JobSetSpecification:
 
-"{
+```json
+{
   "job_spec_ids":[
     "JOB:V01:RAOB:PRS:HRRR_OPS:ingest:grib2",
     "JOB:V01:RAOB:NTV:HRRR_OPS:ingest:grib2"
@@ -39,9 +64,12 @@ Form JobSetSpecification:
   "subset": "RAOB",
   "type": "PS",
   "version": "V01"
-}"
+}
+```
 
 Form IngestDocumentSpecification:
+
+```json
 {
   "builder_type": "NetcdfMetarObsBuilderV01",
   "docType": "ingest",
@@ -89,8 +117,11 @@ Form IngestDocumentSpecification:
   "validTimeInterval": 3600,
   "version": "V01"
 }
+```
 
 Form ProcessSpecificiation:
+
+```json
 {
   "id":"PS:RAOB:GRIB2:MODEL:HRRR_OPS:1730496755:1814400:V01",
   "data_source_id":"DS:RAOB:HRRR_OPS:operational:1730496755:1814400:V01",
@@ -106,8 +137,11 @@ Form ProcessSpecificiation:
   "type": "PS",
   "version": "V01"
 }
+```
 
 Form DataSourceSpecification:
+
+```json
 {
   "id": "DS:operational:HRRR_OPS:1730496755:0:1730498583:V01",
   "type": "DS",
@@ -130,4 +164,5 @@ Form DataSourceSpecification:
   "data_management_document_uri": "..."
   "TTLTier": 4
 }
+```
 
