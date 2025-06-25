@@ -1,0 +1,28 @@
+{{define "index.tmpl"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Form</title>
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+    <h1>Select a Form</h1>
+    <form method="get" action="/form/JobSpecification">
+        <button class="btn btn-primary mb-2" type="submit">JobSpecification</button>
+    </form>
+    <form method="get" action="/form/JobSetSpecification">
+        <button class="btn btn-primary mb-2" type="submit">JobSetSpecification</button>
+    </form>
+    <form method="get" action="/form/IngestDocumentSpecification">
+        <button class="btn btn-primary mb-2" type="submit">IngestDocumentSpecification</button>
+    </form>
+    <form method="get" action="/form/ProcessSpecification">
+        <button class="btn btn-primary mb-2" type="submit">ProcessSpecification</button>
+    </form>
+    <form method="get" action="/form/DataSourceSpecification">
+        <button class="btn btn-primary mb-2" type="submit">DataSourceSpecification</button>
+    </form>
+</body>
+</html>
+{{end}}

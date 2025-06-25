@@ -1,0 +1,41 @@
+{{define "form.tmpl"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.FormType}} Form</title>
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+    <h1>{{.FormType}}</h1>
+    <form method="post">
+        {{range $key, $value := .Data}}
+            <div class="mb-3">
+                <label class="form-label">{{$key}}</label>
+                {{if eq $key "job_spec_ids"}}
+                    <select class="form-select" name="job_spec_ids" multiple>
+                        {{range $.SelectOptions.job_spec_ids}}
+                            <option value="{{.}}">{{.}}</option>
+                        {{end}}
+                    </select>
+                {{else if eq $key "ingest_document_ids"}}
+                    <select class="form-select" name="ingest_document_ids" multiple>
+                        {{range $.SelectOptions.ingest_document_ids}}
+                            <option value="{{.}}">{{.}}</option>
+                        {{end}}
+                    </select>
+                {{else if eq $key "version"}}
+                    <input class="form-control" name="version" value="{{$value}}" />
+                {{else if eq (printf "%T" $value) "bool"}}
+                    <input class="form-check-input" type="checkbox" name="{{$key}}" {{if $value}}checked{{end}} />
+                {{else}}
+                    <input class="form-control" name="{{$key}}" value="{{$value}}" />
+                {{end}}
+            </div>
+        {{end}}
+        <button class="btn btn-success" type="submit">Submit</button>
+        <a href="/" class="btn btn-secondary ms-2">Back</a>
+    </form>
+</body>
+</html>
+{{end}}
