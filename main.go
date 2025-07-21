@@ -18,6 +18,7 @@ func main() {
 		},
 	})
 	r.Static("/static", "./static")
+	r.Static("/img", "./static/img")
 	r.LoadHTMLGlob("templates/*")
 
 	r.GET("/", func(c *gin.Context) {
@@ -26,7 +27,22 @@ func main() {
 			c.String(http.StatusInternalServerError, "Error loading forms")
 			return
 		}
-		c.HTML(http.StatusOK, "index.html", gin.H{"forms": templates})
+		data := gin.H{
+			"FlagLogo":       "./static/img/us_flag_small.png",
+			"GovLogo":        "./static/img/icon-dot-gov.svg",
+			"HttpsLogo":      "./static/img/icon-https.svg",
+			"TransparentGif": "./static/img/noaa_transparent.gif",
+			"ProductLink": "/",
+			"ProductText": "vxFormsUI",
+			"AgencyLink": "https://gsl.noaa.gov/",
+			"AgencyText": "Global Systems Laboratory",
+			"BugsLink": "https://github.com/NOAA-GSL/vxFormsUI/issues",
+			"BugsText": "Bugs/Issues (GitHub)",
+			"EmailText": "mailto:mats.gsl@noaa.gov?Subject=Feedback from vxFormsUI",
+			"forms":          templates,
+		}
+
+		c.HTML(http.StatusOK, "index.html", data)
 	})
 
 	r.GET("/form/:name", func(c *gin.Context) {

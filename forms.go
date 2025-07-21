@@ -696,3 +696,19 @@ func ListIDS(docType string) ([]string, error) {
 	}
 	return ids, nil
 }
+
+type TopNavData struct {
+	FlagLogo       string
+	GovLogo        string
+	HttpsLogo      string
+	TransparentGif string
+	ProductLink    string
+	ProductText    string
+	AgencyLink     string
+	AgencyText     string
+	BugsLink       string
+	BugsText       string
+	EmailText      string
+	AlertMessage   string
+}
+

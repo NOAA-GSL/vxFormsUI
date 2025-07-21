@@ -1,0 +1,106 @@
+{{define "topNav"}}
+<div id="topNav">
+    <nav id="officialUSABanner" class="navbar navbar-default" style="
+        height: 100%;
+        margin-bottom: 0;
+        margin-top: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+      " aria-label="official USA governent website banner">
+        <div class="container-fluid">
+            <div class="row" style="
+            height: 100%;
+            margin-bottom: 0;
+            margin-top: 0.75em;
+            padding-left: 2em;
+            padding-right: 1em;
+          ">
+                <div class="col-12" id="usaAccordion" style="font-size: x-small;">
+                    <header class="header" id="usaHeadingOne">
+                        <div aria-controls="usaCollapseOne" class="collapsed small row" data-target="#usaCollapseOne"
+                            data-toggle="collapse">
+                            <div class="col-sm d-flex">
+                                <div>
+                                    <img style="width: 15px" src="{{.FlagLogo}}" alt="U.S. flag" />
+                                    <span>An official website of the United States government
+                                        <button style="
+                          cursor: pointer;
+                          text-transform: none;
+                          border: none;
+                          background-color: inherit;
+                        ">
+                                            <span style="color: #005ea2; text-decoration: underline">Here's how you
+                                                know<i class="fa-solid fa-caret-down" style="margin-left: 5px"
+                                                    alt="down caret icon"></i></span></button></span>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                </div>
+            </div>
+            <div aria-labelledby="usaHeadingOne" class="collapse" data-parent="#usaAccordion" id="usaCollapseOne">
+                <div style="display: flex; width: 100%">
+                    <div style="width: 50%; padding: 2em">
+                        <img style="width: 25px" src="{{.GovLogo}}" alt="Official US Government Icon" />
+                        <small><strong>Official websites use .gov</strong><br />A
+                            <strong>.gov</strong> website belongs to an official government
+                            organization in the United States.</small>
+                    </div>
+                    <div style="width: 50%; padding: 2em">
+                        <img style="width: 25px" src="{{.HttpsLogo}}" alt="Secure Site Icon" />
+                        <small>
+                            <strong>Secure .gov websites use HTTPS</strong>
+                            <br />
+                            A <strong>lock</strong> (
+                            <i class="fa-solid fa-lock" alt="lock icon"></i>
+                            ) or <strong>https://</strong> means you’ve safely connected to the .gov
+                            website. Share sensitive information only on official, secure websites.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <nav id="VxFormsNavigationBar" class="navbar navbar-default" style="
+        color: white;
+        background: #000066;
+        height: 100%;
+        margin-bottom: 0;
+        margin-top: 0;
+        padding-top: 0;
+        padding-bottom: 1%;
+      " aria-label="VxForms navigation bar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a style="margin-bottom: 0; margin-top: 0; padding: 0" class="navbar-brand" href="{{.ProductLink}}"><img
+                        style="
+                height: 100%;
+                margin-bottom: 0;
+                margin-top: 0.5em;
+                padding-left: 1em;
+                padding-right: 1em;
+              " src="{{.TransparentGif}}" alt="NOAA logo" /></a>
+              </div>
+              <div class="navbar-nav" id="navbar-nav" style="
+                font-size: x-small;
+                display: flex;
+                align-items: center;
+                gap: 1em;
+                flex-wrap: wrap;
+              ">
+                <a href="{{.AgencyLink}}" target="_blank" style="color: white; font-size: x-small">{{.AgencyText}}<span class="sr-only">Opens in new window</span></a>
+                <a href="{{.ProductLink}}"><span style="color: white; font-size: x-small">{{.ProductText}}</span></a>
+                <a href="{{.BugsLink}}" target="_blank" style="color: white; font-size: x-small">{{.BugsText}}<span class="sr-only">Opens in new window</span></a>
+                <a href="#about" class="about" style="color: white; font-size: x-small">About</a>
+                <a href="mailto:mats.gsl@noaa.gov?Subject=Feedback from {{.EmailText}}" target="_blank" style="color: white; font-size: x-small">Contact Us<span class="sr-only">Opens in new window</span></a>
+            </div>
+        </div>
+    </nav>
+    <div id="disclaimerBar" class="alert alert-info" style="color: black; font-size: x-small;">
+        PLEASE NOTE: The information on this website is for RESEARCH PURPOSES ONLY. No
+        data from this site should be used to make decisions related to the safety of life
+        and property. There is no guarantee that data will be updated or that any product
+        will continue to be available.
+    </div>
+</div>
+{{end}}
