@@ -381,7 +381,7 @@ func GetJobSpecIDs() ([]string, error) {
 func GetDataSourceIds() ([]string, error) {
 	if dataSourceIds == nil {
 		cluster := GetConnection(GetCBCredentials())
-		query := "SELECT meta().id FROM vxdata._default.COMMON WHERE type = 'DS'"
+		query := "SELECT meta().id FROM vxdata._default.RUNTIME WHERE type = 'DS'"
 		result, err := cluster.Query(query, &gocb.QueryOptions{})
 		if err != nil {
 			return nil, err
@@ -504,7 +504,7 @@ func GetSubTypes() ([]string, error) {
 func GetDataSourceSubTypes() ([]string, error) {
 	if dataSourceSubTypes == nil {
 		cluster := GetConnection(GetCBCredentials())
-		query := "SELECT subTypes FROM vxdata._default.COMMON WHERE meta().id = 'MD:V01:DataSourceSubTypes'"
+		query := "SELECT subTypes FROM vxdata._default.RUNTIME WHERE meta().id = 'MD:V01:DataSourceSubTypes'"
 		result, err := cluster.Query(query, &gocb.QueryOptions{})
 		if err != nil {
 			return nil, err

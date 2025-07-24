@@ -15,6 +15,10 @@ func main() {
 	r := gin.Default()
 	// Custom function to check if a string contains a substring
 	r.SetFuncMap(template.FuncMap{
+		"isString": func(v interface{}) bool {
+			_, ok := v.(string)
+			return ok
+		},
 		"Contains": func(s interface{}, substr string) bool {
 			return strings.Contains(fmt.Sprintf("%v", s), substr)
 		},

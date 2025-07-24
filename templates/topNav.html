@@ -17,24 +17,25 @@
           ">
                 <div class="col-12" id="usaAccordion" style="font-size: x-small;">
                     <header class="header" id="usaHeadingOne">
-                        <div aria-controls="usaCollapseOne" class="collapsed small row" data-target="#usaCollapseOne"
-                            data-toggle="collapse">
+                        <div class="small row">
                             <div class="col-sm d-flex">
                                 <div>
                                     <img style="width: 15px" src="{{.FlagLogo}}" alt="U.S. flag" />
                                     <span>An official website of the United States government
-                                        <button style="
-                          cursor: pointer;
-                          text-transform: none;
-                          border: none;
-                          background-color: inherit;
-                        ">
+                                        <button
+                                            style="cursor: pointer; text-transform: none; border: none; background-color: inherit;"
+                                            class="collapsed" data-bs-toggle="collapse" data-bs-target="#usaCollapseOne"
+                                            aria-controls="usaCollapseOne" aria-expanded="false"
+                                            aria-label="Toggle 'Here's how you know' section">
                                             <span style="color: #005ea2; text-decoration: underline">Here's how you
-                                                know<i class="fa-solid fa-caret-down" style="margin-left: 5px"
-                                                    alt="down caret icon"></i></span></button></span>
+                                                know
+                                                <i class="fa-solid fa-caret-down" style="margin-left: 5px"
+                                                    alt="down caret icon"></i>
+                                            </span>
+                                        </button>
+                                    </span>
                                 </div>
                             </div>
-                        </div>
                     </header>
                 </div>
             </div>
@@ -80,19 +81,38 @@
                 padding-left: 1em;
                 padding-right: 1em;
               " src="{{.TransparentGif}}" alt="NOAA logo" /></a>
-              </div>
-              <div class="navbar-nav" id="navbar-nav" style="
+            </div>
+            <div class="navbar-nav" id="navbar-nav" style="
                 font-size: x-small;
                 display: flex;
+                flex-direction: row;
                 align-items: center;
                 gap: 1em;
-                flex-wrap: wrap;
-              ">
-                <a href="{{.AgencyLink}}" target="_blank" style="color: white; font-size: x-small">{{.AgencyText}}<span class="sr-only">Opens in new window</span></a>
-                <a href="{{.ProductLink}}"><span style="color: white; font-size: x-small">{{.ProductText}}</span></a>
-                <a href="{{.BugsLink}}" target="_blank" style="color: white; font-size: x-small">{{.BugsText}}<span class="sr-only">Opens in new window</span></a>
-                <a href="#about" class="about" style="color: white; font-size: x-small">About</a>
-                <a href="mailto:mats.gsl@noaa.gov?Subject=Feedback from {{.EmailText}}" target="_blank" style="color: white; font-size: x-small">Contact Us<span class="sr-only">Opens in new window</span></a>
+                flex-wrap: nowrap;
+                white-space: nowrap;
+                width: 100%;
+">
+                <div style="margin-right: auto;">
+                    <a href="{{.AgencyLink}}" target="_blank"
+                        style="color:white; font-size: medium; display: inline-block;">
+                        {{.AgencyText}}<span class="sr-only">Opens in new window</span>
+                    </a>
+                </div>
+                <div style="margin-left: auto; display: flex; gap: 1em;">
+                    <a href="{{.ProductLink}}" style="display: inline-block;">
+                        <span style="color: white; font-size: x-small;">{{.ProductText}}</span>
+                    </a>
+                    <a href="{{.BugsLink}}" target="_blank"
+                        style="color: white; font-size: x-small; display: inline-block;">
+                        {{.BugsText}}<span class="sr-only">Opens in new window</span>
+                    </a>
+                    <a href="#about" class="about"
+                        style="color: white; font-size: x-small; display: inline-block;">About</a>
+                    <a href="mailto:mats.gsl@noaa.gov?Subject=Feedback from {{.EmailText}}" target="_blank"
+                        style="color: white; font-size: x-small; display: inline-block;">
+                        Contact Us<span class="sr-only">Opens in new window</span>
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
