@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -15,6 +17,29 @@ func main() {
 	r.SetFuncMap(template.FuncMap{
 		"Contains": func(s interface{}, substr string) bool {
 			return strings.Contains(fmt.Sprintf("%v", s), substr)
+		},
+		"HasPrefix": func(s interface{}, prefix string) bool {
+			return strings.HasPrefix(fmt.Sprintf("%v", s), prefix)
+		},
+		"TrimPrefix": func(s interface{}, prefix string) string {
+			return strings.TrimPrefix(fmt.Sprintf("%v", s), prefix)
+		},
+		"ToJSON": func(v interface{}) string {
+			var encodeBuffer bytes.Buffer
+			var indentBuffer bytes.Buffer
+
+			encoder := json.NewEncoder(&encodeBuffer)
+			encoder.SetEscapeHTML(false)
+			_ = encoder.Encode(v)
+			_ = json.Indent(&indentBuffer, bytes.TrimRight(encodeBuffer.Bytes(), "\n"), "", "  ")
+			return indentBuffer.String()
+		},
+		"SafeHtml": func(s string) template.HTML {
+			return template.HTML(s)
+		},
+		"IsString": func(v interface{}) bool {
+			_, ok := v.(string)
+			return ok
 		},
 	})
 	r.Static("/static", "./static")
@@ -32,13 +57,13 @@ func main() {
 			"GovLogo":        "./static/img/icon-dot-gov.svg",
 			"HttpsLogo":      "./static/img/icon-https.svg",
 			"TransparentGif": "./static/img/noaa_transparent.gif",
-			"ProductLink": "/",
-			"ProductText": "vxFormsUI",
-			"AgencyLink": "https://gsl.noaa.gov/",
-			"AgencyText": "Global Systems Laboratory",
-			"BugsLink": "https://github.com/NOAA-GSL/vxFormsUI/issues",
-			"BugsText": "Bugs/Issues (GitHub)",
-			"EmailText": "mailto:mats.gsl@noaa.gov?Subject=Feedback from vxFormsUI",
+			"ProductLink":    "/",
+			"ProductText":    "vxFormsUI",
+			"AgencyLink":     "https://gsl.noaa.gov/",
+			"AgencyText":     "Global Systems Laboratory",
+			"BugsLink":       "https://github.com/NOAA-GSL/vxFormsUI/issues",
+			"BugsText":       "Bugs/Issues (GitHub)",
+			"EmailText":      "mailto:mats.gsl@noaa.gov?Subject=Feedback from vxFormsUI",
 			"forms":          templates,
 		}
 

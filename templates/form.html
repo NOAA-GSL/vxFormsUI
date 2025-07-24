@@ -71,11 +71,12 @@
                                     IDs</label>
                                 {{else}}
                                 {{/* If the value contains '*', show the value as a hint in the label for clarity */}}
-                                {{if (Contains $value "*")}}
-                                <label for="{{$key}}" class="form-label" id="label-{{$key}}">{{$key}} - <span
-                                        class="text-bold-small">{{$value}}</span></label>
+                                {{if and (Contains $value "*") (not (HasPrefix $key "@"))}}
+                                <label for="{{$key}}" class="form-label" id="label-{{$key}}">{{TrimPrefix $key `@`}} -
+                                    <span class="text-bold-small">{{$value}}</span></label>
                                 {{else}}
-                                <label for="{{$key}}" class="form-label" id="label-{{$key}}">{{$key}}</label>
+                                <label for="{{$key}}" class="form-label" id="label-{{$key}}">{{TrimPrefix $key
+                                    `@`}}</label>
                                 {{end}}
                                 {{end}}
                             </td>
@@ -105,14 +106,22 @@
                                     {{end}}
                                 </select>
                                 {{else}}
-                                {{if (Contains $key "template")}}
-                                <textarea class="form-control template-field-small" id="{{$key}}" name="{{$key}}"
-                                    aria-labelledby="label-{{$key}}" rows="5">{{$value}}</textarea>
+                                {{if (HasPrefix $key "@")}}
+                                <textarea class="form-control template-field-small" id="{{TrimPrefix $key `@`}}"
+                                    name="{{$key}}" aria-labelledby="label-{{$key}}"
+                                    rows="5">{{SafeHtml $value}}</textarea>
+                                {{else}}
+                                {{if (IsString $value)}}
+                                <input type="text" class="form-control" id="{{$key}}" name="{{$key}}"
+                                    aria-labelledby="label-{{$key}}" value="{{SafeHtml $value}}"
+                                    onchange="handleInputChange(event)" {{if index $.form.DisabledFields
+                                    $key}}disabled{{end}}>
                                 {{else}}
                                 <input type="text" class="form-control" id="{{$key}}" name="{{$key}}"
                                     aria-labelledby="label-{{$key}}" value="{{$value}}"
                                     onchange="handleInputChange(event)" {{if index $.form.DisabledFields
                                     $key}}disabled{{end}}>
+                                {{end}}
                                 {{end}}
                                 {{end}}
                             </td>
@@ -129,9 +138,17 @@
                     </tbody>
                 </table>
             </div>
-            <button type="button" class="btn btn-info ms-2" onclick="previewFormAsJSON()">Preview</button>
-            <a href="/" class="btn btn-secondary ms-2">Back</a>
-            <button type="button" class="btn btn-success ms-2" onclick="openRetrieveModal()">Retrieve</button>
+            <div class="d-flex flex-row align-items-center mb-3" style="gap: 0.5em;">
+                <button type="button" onclick="window.location='/'" class="btn d-flex align-items-center"
+                    style="color: #00c853; background: none; border: none; font-size: 2em; padding: 0 0.2em 0 0;">
+                    <i class="fa fa-arrow-left me-2" aria-hidden="true" style="font-size: 1.3em;"></i>
+                    <span style="font-weight: bold; letter-spacing: 1px;">Back</span>
+                </button>
+                <button type="button" class="btn btn-info" style="font-size: 1em;"
+                    onclick="previewFormAsJSON()">Preview</button>
+                <button type="button" class="btn btn-success" style="font-size: 1em;"
+                    onclick="openRetrieveModal()">Retrieve</button>
+            </div>
             <!-- Modal for JSON Preview -->
             <div class="modal fade" id="jsonPreviewModal" tabindex="-1" aria-labelledby="jsonPreviewLabel"
                 aria-hidden="true">
@@ -190,6 +207,8 @@
             const formData = new FormData(form);
             let obj = {};
             for (const [key, value] of formData.entries()) {
+                // skip templatename
+                if (key === "templateName") continue;
                 // Handle multi-select
                 if (obj[key]) {
                     if (Array.isArray(obj[key])) {
@@ -198,7 +217,17 @@
                         obj[key] = [obj[key], value];
                     }
                 } else {
-                    obj[key] = value;
+                    if (key.startsWith('@')) {
+                        try {
+                            obj[key.slice(1)] = JSON.parse(value); // Skip the '@' prefix on the key
+                        } catch (e) {
+                            // Show error to user
+                            alert("The '" + key + "' field is not valid JSON: " + e.message);
+                            return; // Stop further processing
+                        }
+                    } else {
+                        obj[key] = value;
+                    }
                 }
             }
             // For multi-selects, ensure arrays
@@ -316,7 +345,17 @@
                             opt.selected = data[key].includes(opt.value);
                         });
                     } else {
-                        el.value = data[key];
+                        if (typeof data[key] === "string" && data[key].includes("{")) {
+                            try {
+                                el.value = JSON.stringify(data[key], null, 2);
+                            } catch (e) {
+                                // Show error to user
+                                alert("The 'template' field is not valid JSON: " + e.message);
+                                return; // Stop further processing
+                            }
+                        } else {
+                            el.value = data[key];
+                        }
                     }
                 }
             });

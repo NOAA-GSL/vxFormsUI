@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  vxformsui:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: vxformsui:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - CREDENTIALS_FILE=/run/secrets/CREDENTIALS_FILE
+    secrets:
+      - CREDENTIALS_FILE
+secrets:
+  CREDENTIALS_FILE:
+    file: ~/CREDENTIALS_FILE

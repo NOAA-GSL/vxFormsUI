@@ -8,9 +8,7 @@ import (
 	"strings"
 	"sync"
 	"time"
-
 	"gopkg.in/yaml.v3"
-
 	"github.com/couchbase/gocb/v2"
 )
 
@@ -124,6 +122,7 @@ func UpsertFormData(id string, data map[string]interface{}) error {
 	return nil
 }
 
+
 func GetFormTemplates() ([]FormTemplate, error) {
 	cluster := GetConnection(GetCBCredentials())
 	query := "SELECT * FROM vxdata._default.COMMON WHERE meta().id like '%TEMPLATE'"
@@ -155,11 +154,11 @@ func GetFormTemplates() ([]FormTemplate, error) {
 				if strings.HasPrefix(vStr, "&") {
 					selectMode = handleNamedFunction(vStr, selectMode, fields, key)
 				} else {
-					selectMode = handleFieldStr(vStr, selectMode, fields, key)
+					selectMode = handleFieldStr(vStr, fields, key)
 				}
 			} else {
-				if key == "template" {
-					// If the key is "template", we handle it differently
+				if strings.HasPrefix(key, "@") {
+					// If the key is indicating a json, we handle it differently
 					// store it as a JSON value
 					jsonValue, err := json.MarshalIndent(template[key], "", "  ")
 					if err != nil {
@@ -243,7 +242,7 @@ func GetFormTemplates() ([]FormTemplate, error) {
 	return templates, nil
 }
 
-func handleFieldStr(vStr string, selectMode string, fields map[string]interface{}, key string) string {
+func handleFieldStr(vStr string, fields map[string]interface{}, key string) string {
 	fields[key] = vStr
 	return ""
 }
@@ -402,7 +401,7 @@ func GetDataSourceIds() ([]string, error) {
 func GetProcessSpecIds() ([]string, error) {
 	if processSpecIds == nil {
 		cluster := GetConnection(GetCBCredentials())
-		query := "SELECT meta().id FROM vxdata._default.COMMON WHERE type = 'PS' and docType = 'processSpec'"
+		query := "SELECT meta().id FROM vxdata._default.RUNTIME WHERE type = 'PS'"
 		result, err := cluster.Query(query, &gocb.QueryOptions{})
 		if err != nil {
 			return nil, err
@@ -422,7 +421,7 @@ func GetProcessSpecIds() ([]string, error) {
 func GetIngestDocumentIds() ([]string, error) {
 	if ingestDocumentIds == nil {
 		cluster := GetConnection(GetCBCredentials())
-		query := "SELECT meta().id FROM vxdata._default.COMMON WHERE type = 'MD' and docType = 'ingest'"
+		query := "SELECT meta().id FROM vxdata._default.RUNTIME WHERE type = 'IS' and docType = 'ingest'"
 		result, err := cluster.Query(query, &gocb.QueryOptions{})
 		if err != nil {
 			return nil, err
