@@ -41,6 +41,7 @@ var (
 	processSpecIds      []string
 	ingestDocumentIds   []string
 	subsets             []string
+	regions             []string
 	subDocTypes         []string
 	subTypes            []string
 	dataSourceSubTypes  []string
@@ -304,6 +305,24 @@ func handleNamedFunction(vStr string, selectMode string, fields map[string]inter
 		} else {
 			fields[key] = subsets
 		}
+	case "getRegions":
+		selectMode = ""
+		regions, err := GetRegions()
+		if err != nil {
+			log.Printf("Error getting regions: %v", err)
+			fields[key] = "Error retrieving regions"
+		} else {
+			fields[key] = regions
+		}
+	case "getCTCSubDocTypes":
+		selectMode = ""
+		subDocTypes, err := GetCTCSubDocTypes()
+		if err != nil {
+			log.Printf("Error getting CTC sub document types: %v", err)
+			fields[key] = "Error retrieving CTC sub document types"
+		} else {
+			fields[key] = subDocTypes
+		}
 	case "getTTLTier":
 		selectMode = ""
 		tiers, err := GetTTLTier()
@@ -458,6 +477,28 @@ func GetSubsets() ([]string, error) {
 	return subsets, nil
 }
 
+
+func GetRegions() ([]string, error) {
+	if regions == nil {
+		cluster := GetConnection(GetCBCredentials())
+		query := "SELECT name FROM vxdata._default.COMMON WHERE type = 'MD' AND docType='region'"
+		result, err := cluster.Query(query, &gocb.QueryOptions{})
+		if err != nil {
+			return nil, err
+		}
+		for result.Next() {
+			var row map[string]interface{}
+			if err := result.Row(&row); err == nil {
+				if t, ok := row["name"].(string); ok {
+					regions = append(regions, fmt.Sprintf("%v", t))
+				}
+			}
+		}
+	}
+	return regions, nil
+}
+
+
 func GetSubDocTypes() ([]string, error) {
 	if subDocTypes == nil {
 		cluster := GetConnection(GetCBCredentials())
@@ -479,6 +520,10 @@ func GetSubDocTypes() ([]string, error) {
 		}
 	}
 	return subDocTypes, nil
+}
+
+func GetCTCSubDocTypes() ([]string, error) {
+	return []string{"CEILING", "VISIBILITY"}, nil
 }
 
 func GetSubTypes() ([]string, error) {
