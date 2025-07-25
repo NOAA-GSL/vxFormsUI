@@ -286,7 +286,7 @@
         function resetIdField() {
             var idInput = document.getElementById('id');
             if (idInput) {
-                idInput.value = document.getElementById('id').value = document.getElementById('label-id').textContent;
+                idInput.value = document.getElementById('id').value = (document.getElementById('label-id').textContent).replace(/id -\s*/, "");
             }
         }
 

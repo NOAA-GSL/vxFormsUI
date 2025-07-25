@@ -1,0 +1,61 @@
+{{define "footer"}}
+<nav id="footnav" class="navbar navbar-default" style="display: block; width: 100%;" aria-label="footer bar">
+  <div class="container-fluid" style="
+      background-color: #eeeeee;
+      margin-bottom: 0;
+      margin-top: 0;
+      padding-bottom: 1em;
+      padding-top: 1em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    ">
+    <div class="row" style="width: 100%; justify-content: center; display: flex; background-color: #eeeeee;">
+      <span style="text-align: center; padding-left: 1em; padding-right: 1em;">
+        {{.Version}}
+      </span>
+    </div>
+    <div class="row" style="width: 100%; justify-content: center; display: flex; background-color: #eeeeee;">
+      <span style="text-align: center; padding-left: 1em; padding-right: 1em;">
+        <span>
+          <a href="http://www.noaa.gov/privacy" target="_blank" style="color: black; font-size: small">NOAA Privacy
+            Statement<span class="sr-only">Opens in new window</span></a>
+          &nbsp;
+        </span>
+        <span>
+          <a href="http://www.noaa.gov/accessibility" target="_blank" style="color: black; font-size: small">Web
+            Accessibility Statement<span class="sr-only">Opens in new window</span></a>
+          &nbsp;
+        </span>
+        <span>
+          <a href="http://www.noaa.gov/disclaimer" target="_blank" style="color: black; font-size: small">Disclaimer for
+            External Links<span class="sr-only">Opens in new window</span></a>
+          &nbsp;
+        </span>
+        <span>
+          <a href="http://www.noaa.gov/" target="_blank" style="color: black; font-size: small">NOAA<span
+              class="sr-only">Opens in new window</span></a>
+          &nbsp;
+        </span>
+        {{if .IsMetexpress}}
+        <span>
+          <a href="http://www.commerce.gov/" target="_blank" style="color: black; font-size: small">U.S. Department of
+            Commerce<span class="sr-only">Opens in new window</span></a>
+        </span>
+        {{else}}
+        <span>
+          <a href="http://www.commerce.gov/" target="_blank" style="color: black; font-size: small">U.S. Department of
+            Commerce<span class="sr-only">Opens in new window</span></a>
+          &nbsp;
+        </span>
+        <span>
+          <a href="http://research.noaa.gov/" target="_blank" style="color: black; font-size: small">NOAA Research<span
+              class="sr-only">Opens in new window</span></a>
+        </span>
+        {{end}}
+      </span>
+    </div>
+  </div>
+</nav>
+{{end}}
