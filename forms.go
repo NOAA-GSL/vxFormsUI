@@ -323,6 +323,15 @@ func handleNamedFunction(vStr string, selectMode string, fields map[string]inter
 		} else {
 			fields[key] = subDocTypes
 		}
+	case "getSUMSSubDocTypes":
+		selectMode = ""
+		subDocTypes, err := GetSUMSSubDocTypes()
+		if err != nil {
+			log.Printf("Error getting SUMS sub document types: %v", err)
+			fields[key] = "Error retrieving SUMS sub document types"
+		} else {
+			fields[key] = subDocTypes
+		}
 	case "getTTLTier":
 		selectMode = ""
 		tiers, err := GetTTLTier()
@@ -524,6 +533,10 @@ func GetSubDocTypes() ([]string, error) {
 
 func GetCTCSubDocTypes() ([]string, error) {
 	return []string{"CEILING", "VISIBILITY"}, nil
+}
+
+func GetSUMSSubDocTypes() ([]string, error) {
+	return []string{"SURFACE"}, nil
 }
 
 func GetSubTypes() ([]string, error) {

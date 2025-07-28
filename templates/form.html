@@ -128,7 +128,10 @@
                             <td style="width:10%">
                                 {{if (Contains (index $.form.Fields "id") $key)}}
                                 <button type="button" class="btn btn-success btn-checkmark" aria-label="Accept {{$key}}"
-                                    onclick="handleInputChange({target: document.getElementById('{{$key}}'), name: document.getElementById('{{$key}}').name, value: document.getElementById('{{$key}}').value})">
+                                    id="accept-btn-{{$key}}" onclick="
+        handleInputChange({target: document.getElementById('{{$key}}'), name: document.getElementById('{{$key}}').name, value: document.getElementById('{{$key}}').value});
+        this.disabled = true;
+    ">
                                     <i class="fa-solid fa-check fa" aria-hidden="true"></i>
                                 </button>
                                 {{end}}
@@ -139,7 +142,8 @@
                 </table>
             </div>
             <div class="d-flex flex-row align-items-center mb-3" style="gap: 0.5em;">
-                <button type="button" onclick="window.location='/'" class="btn d-flex align-items-center" style="background-color: #90ee90; color: #000; font-size: 1em;">
+                <button type="button" onclick="window.location='/'" class="btn d-flex align-items-center"
+                    style="background-color: #90ee90; color: #000; font-size: 1em;">
                     <i class="fa fa-arrow-left me-2" aria-hidden="true" style="font-size: 1.3em; color: #000;"></i>
                     <span style="color: #000;">Back</span>
                 </button>
@@ -191,7 +195,16 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Re-enable all Accept buttons on page load
+        window.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.btn-checkmark').forEach(function (btn) {
+                btn.disabled = false;
+            });
+        });
+
         function handleInputChange(event) {
+            // update all the disabled inputs that contain the changed field
+            // ... like the id field
             const disabledInputs = document.querySelectorAll('input[type="text"][disabled]');
             disabledInputs.forEach(function (input) {
                 if (input.defaultValue.includes("*" + event.target.name)) {
@@ -199,6 +212,19 @@
                     console.log('Disabled input contains the changed field:', input.name, "and the value is now:", input.value);
                 }
             });
+            // Update the corresponding values in the template value for this field
+            jsonTemplate = JSON.parse(document.getElementById('template').value);
+            // get the original template value
+            const originalValue = jsonTemplate[event.target.name];
+            // update the json template value
+            jsonTemplate[event.target.name] = event.target.value;
+            // stringify the template and update the hidden input
+            newData = JSON.stringify(jsonTemplate, null, 2);
+            // substitute original value with the new value
+            newData = newData.replaceAll(originalValue, event.target.value);
+            // update the hidden input with the new template data
+            document.getElementById('template').value = newData;
+            console.log('Updated template value for', event.target.name, ':', newData);
         }
 
         function previewFormAsJSON() {
@@ -251,8 +277,7 @@
 
         function openRetrieveModal() {
             // Get the value of the "type" field from the form
-            var typeField = document.getElementById('type');
-            var docType = typeField ? typeField.value : 'DS';
+            var docType = document.getElementById('type').value;
             fetch('/list-ds-ids?type=' + encodeURIComponent(docType))
                 .then(res => res.ok ? res.json() : res.text().then(msg => Promise.reject(msg)))
                 .then(ids => {
@@ -286,8 +311,12 @@
         function resetIdField() {
             var idInput = document.getElementById('id');
             if (idInput) {
-                idInput.value = document.getElementById('id').value = (document.getElementById('label-id').textContent).replace(/id -\s*/, "");
+                idInput.value = document.getElementById('label-id').textContent.replace(/id -\s*/, "");
             }
+            // Re-enable all Accept buttons
+            document.querySelectorAll('.btn-checkmark').forEach(function (btn) {
+                btn.disabled = false;
+            });
         }
 
         function commitJson() {
